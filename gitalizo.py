@@ -26,8 +26,9 @@ def main():
                 r.download()
                 r.analyze()
             r.clean()
-        except:
-            log.write("Failed mysteriously! Moving on...")
+        except Exception as e:
+            log.write(str(e))
+            log.write("\nMoving on to next repo...\n")
 
 
 def make_dirs(dirs):
@@ -52,11 +53,11 @@ def end_log():
 class Repo:
     ANALIZO_OUTS = 'analizo_outs'
     REPO_TEMP = 'repo_temp'
-    URL_TEMPLATE = 'https://github.com{}.git'
+    SSH_TEMPLATE = 'git@github.com:{}.git'
 
     def __init__(self, repo_id, repo_url):
         self.id = repo_id
-        self.url = Repo.URL_TEMPLATE.format(urlparse(repo_url).path[6:])
+        self.url = Repo.SSH_TEMPLATE.format(urlparse(repo_url).path[7:])
         self.clone_dir = os.path.join(Repo.REPO_TEMP, self.id)
         self.out_file = os.path.join(Repo.ANALIZO_OUTS, self.id)
 
@@ -89,8 +90,8 @@ class Repo:
         # placeholder for smarter function to weed out bad repos
         if os.path.isfile(self.out_file):
             log.write("Skipping - {} already analyzed".format(self.id))
-            return false
-        return true
+            return False
+        return True
 
 
 if __name__ == '__main__':
