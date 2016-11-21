@@ -22,9 +22,8 @@ def main():
     for repo_row in csv.reader(open(repo_list_file, 'r')):
         try:
             r = Repo(repo_row[0], repo_row[1])
-            if r.should_download():
-                r.download()
             if r.should_analyze():
+                r.download()
                 r.analyze()
             r.clean()
         except:
@@ -60,9 +59,9 @@ class Repo:
         self.url = Repo.URL_TEMPLATE.format(urlparse(repo_url).path[6:])
         self.clone_dir = os.path.join(Repo.REPO_TEMP, self.id)
         self.out_file = os.path.join(Repo.ANALIZO_OUTS, self.id)
-        make_dirs([self.clone_dir])
 
     def download(self):
+        make_dirs([self.clone_dir])
         log.write("Cloning repo {}\n".format(self.id))
 
         cmd = ['git', 'clone', self.url, self.clone_dir]
@@ -86,13 +85,12 @@ class Repo:
         log.write(subprocess.check_output(cmd))
         log.write("Done cleaning up\n")
 
-    def should_download(self):
-        # placeholder for smarter function to weed out bad repos
-        return not os.path.isdir(self.clone_dir)
-
     def should_analyze(self):
         # placeholder for smarter function to weed out bad repos
-        return not os.path.isfile(self.out_file)
+        if os.path.isfile(self.out_file):
+            log.write("Skipping - {} already analyzed".format(self.id))
+            return false
+        return true
 
 
 if __name__ == '__main__':
