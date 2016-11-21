@@ -20,11 +20,15 @@ def main():
         sys.exit("Usage: gitalizo <repo id filename>")
 
     for repo_row in csv.reader(open(repo_list_file, 'r')):
-        r = Repo(repo_row[0], repo_row[1])
-        r.download()
-        if r.should_analyze():
-            r.analyze()
-        r.clean()
+        try:
+            r = Repo(repo_row[0], repo_row[1])
+            if r.should_download():
+                r.download()
+            if r.should_analyze():
+                r.analyze()
+            r.clean()
+        except:
+            log.write("Failed mysteriously! Moving on...")
 
 
 def make_dirs(dirs):
@@ -36,7 +40,6 @@ def make_dirs(dirs):
 
 
 def start_log(log_dir):
-    # noinspection PyGlobalUndefined
     global log
     log_path = os.path.join(log_dir, 'gitalizo_log_{}'.format(int(time.time())))
     log = open(log_path, 'a+')
@@ -83,9 +86,13 @@ class Repo:
         log.write(subprocess.check_output(cmd))
         log.write("Done cleaning up\n")
 
+    def should_download(self):
+        # placeholder for smarter function to weed out bad repos
+        return not os.path.isdir(self.clone_dir)
+
     def should_analyze(self):
         # placeholder for smarter function to weed out bad repos
-        return True
+        return not os.path.isfile(self.out_file)
 
 
 if __name__ == '__main__':
