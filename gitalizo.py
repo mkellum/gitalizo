@@ -50,40 +50,6 @@ class Log:
         self.file.write("{}: {}\n".format(time.ctime(), m))
 
 
-# Takes a YAML file output by Analizo (filename should be '<repoID>.yaml')
-def AnalizoToSQLCSV(analizoMetricsFile):
-    fileLines = open(analizoMetricsFile).readlines()
-    repoID = analizoMetricsFile[:-5]
-
-    repoMetrics = []
-    lineIndex = 1  # skip first '---' line
-    line = fileLines[lineIndex]
-    while ('---' not in line):
-        splitLine = line.split(':')
-        metric = splitLine[1].strip()
-        repoMetrics.append(metric)
-        lineIndex += 1
-        line = fileLines[lineIndex]
-
-    WriteRepoCSVFile(repoMetrics, repoID)
-
-
-# Writes repo-level metrics as a row to repoMetrics.csv
-# (appending or creating if it does not already exist)
-def WriteRepoCSVFile(metricsList, repoID):
-    repoMetricsFile = 'repoMetrics.csv'
-
-    CSVrow = repoID + ','
-    for metric in metricsList:
-        CSVrow += metric + ','
-    CSVrow = CSVrow[:-1]  # strip the trailing comma
-
-    CSVfile = open(repoMetricsFile, 'a+')
-    CSVfile.write(CSVrow + '\n')
-
-    CSVfile.close()
-
-
 class Repo:
     SSH_TEMPLATE = 'git@github.com:{}.git'
 
@@ -107,6 +73,38 @@ class Repo:
         log.add("Converting Analizo's YAML to CSV for repo {}".format(self.id))
         AnalizoToSQLCSV(self.id)
         log.add("Done converting")
+
+    # Takes a YAML file output by Analizo (filename should be '<repoID>.yaml')
+    def AnalizoToSQLCSV(self, analizo_metrics_file):
+        fileLines = open(analizo_metrics_file).readlines()
+        repoID = analizo_metrics_file[:-5]
+
+        repoMetrics = []
+        lineIndex = 1  # skip first '---' line
+        line = fileLines[lineIndex]
+        while ('---' not in line):
+            splitLine = line.split(':')
+            metric = splitLine[1].strip()
+            repoMetrics.append(metric)
+            lineIndex += 1
+            line = fileLines[lineIndex]
+
+        self.WriteRepoCSVFile(repoMetrics)
+
+    # Writes repo-level metrics as a row to repoMetrics.csv
+    # (appending or creating if it does not already exist)
+    def WriteRepoCSVFile(self, metrics_list):
+        repoMetricsFile = 'repoMetrics.csv'
+
+        CSVrow = self.id + ','
+        for metric in metrics_list:
+            CSVrow += metric + ','
+        CSVrow = CSVrow[:-1]  # strip the trailing comma
+
+        CSVfile = open(repoMetricsFile, 'a+')
+        CSVfile.write(CSVrow + '\n')
+
+        CSVfile.close()
 
 
 if __name__ == '__main__':
