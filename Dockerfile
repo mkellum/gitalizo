@@ -11,6 +11,7 @@ RUN apt-get -y install --no-install-recommends apt-utils
 RUN apt-get -y install --no-install-recommends wget
 RUN apt-get -y install --no-install-recommends git
 RUN apt-get -y install --no-install-recommends python
+RUN apt-get -y install --no-install-recommends ca-certificates
 
 RUN wget -O - http://www.analizo.org/download/signing-key.asc | apt-key add -
 RUN apt-get update

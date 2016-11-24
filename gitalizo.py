@@ -15,7 +15,7 @@ def main():
         if not repo_index or len(sys.argv) != 2:
             raise Exception("Incorrect arguments: {}".format(sys.argv))
 
-        reader = csv.reader(open('repoList.csv', 'r'))
+        reader = csv.reader(open('repo_list.csv', 'r'))
 
         repo_row = None
         for i, row in enumerate(reader):
@@ -51,21 +51,21 @@ class Log:
 
 
 class Repo:
-    SSH_TEMPLATE = 'git@github.com:{}.git'
+    HTTPS_TEMPLATE = 'https://github.com/{}.git'
 
     def __init__(self, repo_row):
         self.id = repo_row[0]
-        self.url = Repo.SSH_TEMPLATE.format(urlparse(repo_row[1]).path[7:])
+        self.url = Repo.HTTPS_TEMPLATE.format(urlparse(repo_row[1]).path[7:])
 
     def download(self, log):
         log.add("Cloning repo {}".format(self.id))
-        cmd = ['git', 'clone', self.url, '.']
+        cmd = ['git', 'clone', self.url, './{}'.format(self.id)]
         log.add(subprocess.check_output(cmd))
         log.add("Done cloning")
 
     def analyze(self, log):
         log.add("Analyzing repo {}".format(self.id))
-        cmd = ['analizo', 'metrics', '.', '-o', self.id]
+        cmd = ['analizo', 'metrics', '.', '-o', './{}'.format(self.id)]
         log.add(subprocess.check_output(cmd))
         log.add("Done analyzing")
 
