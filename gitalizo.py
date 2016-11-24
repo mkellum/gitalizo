@@ -59,13 +59,13 @@ class Repo:
 
     def download(self, log):
         log.add("Cloning repo {}".format(self.id))
-        cmd = ['git', 'clone', self.url, './{}'.format(self.id)]
+        cmd = ['git', 'clone', self.url, './repo{}'.format(self.id)]
         log.add(subprocess.check_output(cmd))
         log.add("Done cloning")
 
     def analyze(self, log):
         log.add("Analyzing repo {}".format(self.id))
-        cmd = ['analizo', 'metrics', '.', '-o', self.id]
+        cmd = ['analizo', 'metrics', '.', '-o', './repo{}'.format(self.id)]
         log.add(subprocess.check_output(cmd))
         log.add("Done analyzing")
 
