@@ -17,3 +17,7 @@ RUN wget -O - http://www.analizo.org/download/signing-key.asc | apt-key add -
 RUN apt-get update
 
 RUN apt-get -y install analizo
+
+RUN mkdir /gitalizo
+COPY gitalizo.py gitalizo
+COPY repo_list.csv gitalizo
