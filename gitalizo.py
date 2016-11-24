@@ -59,19 +59,25 @@ class Repo:
 
     def download(self, log):
         log.add("Cloning repo {}".format(self.id))
+
         cmd = ['git', 'clone', self.url, './repo{}'.format(self.id)]
-        log.add(subprocess.check_output(cmd))
+        subprocess.check_output(cmd)
+
         log.add("Done cloning")
 
     def analyze(self, log):
         log.add("Analyzing repo {}".format(self.id))
+
         cmd = ['analizo', 'metrics', './repo{}'.format(self.id), '-o', self.id]
-        log.add(subprocess.check_output(cmd))
+        subprocess.check_output(cmd)
+
         log.add("Done analyzing")
 
     def yamlToCSV(self, log):
         log.add("Converting Analizo's YAML to CSV for repo {}".format(self.id))
-        AnalizoToSQLCSV(self.id)
+
+        self.AnalizoToSQLCSV(self.id)
+
         log.add("Done converting")
 
     # Takes a YAML file output by Analizo (filename should be '<repoID>.yaml')
