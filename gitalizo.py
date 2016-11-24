@@ -65,7 +65,7 @@ class Repo:
 
     def analyze(self, log):
         log.add("Analyzing repo {}".format(self.id))
-        cmd = ['analizo', 'metrics', '.', '-o', './{}'.format(self.id)]
+        cmd = ['analizo', 'metrics', '.', '-o', self.id]
         log.add(subprocess.check_output(cmd))
         log.add("Done analyzing")
 
