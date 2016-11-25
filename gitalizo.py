@@ -43,7 +43,7 @@ class Log:
         self.add("Started Log")
 
     def end_log(self):
-        self.add("Finished Log".format(time.ctime()))
+        self.add("Finished Log")
         self.file.close()
 
     def add(self, m):
