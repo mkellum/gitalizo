@@ -18,6 +18,5 @@ RUN apt-get update
 
 RUN apt-get -y install analizo
 
-RUN mkdir /gitalizo
-COPY gitalizo.py gitalizo
-COPY repo_list.csv gitalizo
+COPY gitalizo.py /
+COPY repo_list.csv /
