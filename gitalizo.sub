@@ -1,10 +1,12 @@
 universe = docker
 
+docker_image = mkellum/gitalizo
+
 # log = gitalizo_$(Cluster).log
 # error = gitalizo_$(Cluster)_$(Process).err
 # output = gitalizo_$(Cluster)_$(Process).out
 
-executable = python
+executable = /usr/bin/python
 arguments = /gitalizo.py $(Process) 2
 
 should_transfer_files = YES
