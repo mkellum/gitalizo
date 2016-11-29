@@ -27,7 +27,7 @@ def main():
 
         reader = csv.reader(open('repo_list.csv', 'r'))
         for i, row in enumerate(reader):
-            if i >= end_i
+            if i >= end_i:
                 break
             if i > start_i:
                 log.add("Starting row {}").format(i)
@@ -35,6 +35,7 @@ def main():
                 r.download(log)
                 r.analyze(log)
                 r.yamlToCSV(log)
+                r.cleanup(log)
 
     except Exception as e:
         log.add(str(e))
@@ -105,6 +106,16 @@ class Repo:
             line = fileLines[lineIndex]
 
         self.WriteRepoCSVFile(repoMetrics)
+
+    def cleanup(self,log):
+        log.add("Cleaning up after repo {}".format(self.id))
+
+        cmd = ['rm', '-rf', './repo{}'.format(self.id)]
+        sp_output = subprocess.check_output(cmd)
+        if sp_output:
+            log.add(sp_output)
+
+        log.add("Done cleaning up")
 
     # Writes repo-level metrics as a row to repoMetrics.csv
     # (appending or creating if it does not already exist)
