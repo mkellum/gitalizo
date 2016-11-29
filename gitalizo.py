@@ -11,25 +11,30 @@ def main():
     log = Log()
 
     try:
-        repo_index = int(sys.argv[1])
-        if not repo_index or len(sys.argv) != 2:
+        # number in sequence (from condor), 0-indexed
+        proc_num = int(sys.argv[1])
+
+        # our bite size per proc - constant per submit!
+        repos_per_proc = int(sys.argv[2])
+
+        if not proc_num or not repos_per_proc or len(sys.argv) != 3:
             raise Exception("Incorrect arguments: {}".format(sys.argv))
 
+        start_i = proc_num * repos_per_proc
+        end_i = start_i + repos_per_proc
+
+        log.add("Will analyze rows {} to {}").format(start_i, end_i)
+
         reader = csv.reader(open('repo_list.csv', 'r'))
-
-        repo_row = None
         for i, row in enumerate(reader):
-            if i == repo_index:
-                repo_row = row
+            if i >= end_i
                 break
-
-        if not repo_row:
-            raise Exception("Could not find row: {}".format(repo_index))
-
-        r = Repo(repo_row)
-        r.download(log)
-        r.analyze(log)
-        r.yamlToCSV(log)
+            if i > start_i:
+                log.add("Starting row {}").format(i)
+                r = Repo(row)
+                r.download(log)
+                r.analyze(log)
+                r.yamlToCSV(log)
 
     except Exception as e:
         log.add(str(e))
