@@ -1,0 +1,15 @@
+universe = docker
+
+log = gitalizo_$(Cluster).log
+error = gitalizo_$(Cluster)_$(Process).err
+output = gitalizo_$(Cluster)_$(Process).out
+
+executable = python
+arguments = /gitalizo.py $(Process) 2
+
+should_transfer_files = NO
+should_transfer_output = ON_EXIT
+
+request_cpus = 1
+request_memory = 4GB
+request_disk = 2GB
