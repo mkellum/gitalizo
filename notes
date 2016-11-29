@@ -1,0 +1,23 @@
+try doing 4 at a time to make this go faster, skip repeated overhead
+1-2k jobs can get going on our system
+by default will be on the right machines - don't glide
+queue x where x is the number of indeces to attempt
+cluster is the unique submit id, and the process is the individual index in that submit
+will be using $(Process) to interpolate this to submit file
+
+do not need to xfer input files
+output files will be transfered - anything that's created!
+
+think of 10,000 jobs as a good upper limit
+
+request_cpus = 1
+request_memory = 4GB
+request_disk = 2GB
+
+condor_q to check in on jobs
+
+
+
+software and data carpentry workshops on campus - providing support for researchers
+software carpentry blog, open discussion list - sometimes job posts come up here
+tracy lewis-williams? peer mentoring/learning CS1

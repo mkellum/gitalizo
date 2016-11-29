@@ -61,7 +61,9 @@ class Repo:
         log.add("Cloning repo {}".format(self.id))
 
         cmd = ['git', 'clone', self.url, './repo{}'.format(self.id)]
-        subprocess.check_output(cmd)
+        sp_output = subprocess.check_output(cmd)
+        if sp_output:
+            log.add(sp_output)
 
         log.add("Done cloning")
 
@@ -69,7 +71,9 @@ class Repo:
         log.add("Analyzing repo {}".format(self.id))
 
         cmd = ['analizo', 'metrics', './repo{}'.format(self.id), '-o', self.id]
-        subprocess.check_output(cmd)
+        sp_output = subprocess.check_output(cmd)
+        if sp_output:
+            log.add(sp_output)
 
         log.add("Done analyzing")
 
