@@ -22,7 +22,7 @@ def main():
 
     print "Will analyze rows {} to {}".format(start_i, end_i)
 
-    reader = csv.reader(open('repo_list.csv', 'r'))
+    reader = csv.reader(open('/repo_list.csv', 'r'))
     for i, row in enumerate(reader):
         if i >= end_i:
             break
