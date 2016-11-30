@@ -36,7 +36,6 @@ def main():
                 r.cleanup()
             except Exception as e:
                 print str(e)
-                sys.exit(1)
 
 
 class Repo:
@@ -69,26 +68,17 @@ class Repo:
     def yamlToCSV(self):
         print "Converting Analizo's YAML to CSV for repo {}".format(self.id)
 
-        self.AnalizoToSQLCSV(self.id)
-
-        print "Done converting"
-
-    # Takes a YAML file output by Analizo (filename should be '<repoID>.yaml')
-    def AnalizoToSQLCSV(self, analizo_metrics_file):
-        fileLines = open(analizo_metrics_file).readlines()
-        repoID = analizo_metrics_file[:-5]
-
         repoMetrics = []
-        lineIndex = 1  # skip first '---' line
-        line = fileLines[lineIndex]
-        while ('---' not in line):
+        for line in open(self.id).readlines()[1:]:
+            if ('---' not in line):
+                break
             splitLine = line.split(':')
             metric = splitLine[1].strip()
             repoMetrics.append(metric)
-            lineIndex += 1
-            line = fileLines[lineIndex]
 
         self.WriteRepoCSVFile(repoMetrics)
+
+        print "Done converting"
 
     # Writes repo-level metrics as a row to repoMetrics.csv
     # (appending or creating if it does not already exist)
