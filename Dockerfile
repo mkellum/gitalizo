@@ -20,3 +20,5 @@ RUN apt-get -y install analizo
 
 COPY gitalizo.py /
 COPY repo_list.csv /
+
+RUN mkdir /repo_metrics
