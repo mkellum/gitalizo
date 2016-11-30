@@ -23,5 +23,5 @@ COPY repo_list.csv /
 
 RUN mkdir /repo_metrics
 
-RUN git config --global user.name "dummy24601"
-RUN git config --global user.email "5a9wml+cafn9w0qrudls@sharklasers.com"
+RUN mkdir -p /home/condor
+RUN echo 'condor::65534:0::/home/condor:/bin/bash' >> /etc/passwd

@@ -48,7 +48,7 @@ class Repo:
     def download(self):
         print "Cloning repo {}".format(self.id)
 
-        cmd = ['git','clone',self.url,'/repo{}'.format(self.id)]
+        cmd = ['git','clone',self.url,'repo{}'.format(self.id)]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
@@ -58,7 +58,7 @@ class Repo:
     def analyze(self):
         print "Analyzing repo {}".format(self.id)
 
-        cmd = ['analizo','metrics','/repo{}'.format(self.id),'-o',self.id]
+        cmd = ['analizo','metrics','repo{}'.format(self.id),'-o',self.id]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
@@ -69,7 +69,7 @@ class Repo:
         print "Converting Analizo's YAML to CSV for repo {}".format(self.id)
 
         repoMetrics = []
-        for line in open('/{}'.format(self.id)).readlines()[1:]:
+        for line in open('./{}'.format(self.id)).readlines()[1:]:
             if ('---' not in line):
                 break
             splitLine = line.split(':')
@@ -83,7 +83,7 @@ class Repo:
     # Writes repo-level metrics as a row to repoMetrics.csv
     # (appending or creating if it does not already exist)
     def WriteRepoCSVFile(self, metrics_list):
-        repoMetricsFile = '/repo_metrics/{}.csv'.format(self.id)
+        repoMetricsFile = './repo_metrics/{}.csv'.format(self.id)
 
         CSVrow = self.id + ','
         for metric in metrics_list:
