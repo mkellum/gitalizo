@@ -69,7 +69,7 @@ class Repo:
         print "Converting Analizo's YAML to CSV for repo {}".format(self.id)
 
         repoMetrics = []
-        for line in open(self.id).readlines()[1:]:
+        for line in open('/{}'.format(self.id)).readlines()[1:]:
             if ('---' not in line):
                 break
             splitLine = line.split(':')
