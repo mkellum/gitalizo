@@ -48,7 +48,7 @@ class Repo:
     def download(self):
         print "Cloning repo {}".format(self.id)
 
-        cmd = ['git','clone',self.url,'./repo{}'.format(self.id)]
+        cmd = ['git','clone',self.url,'/repo{}'.format(self.id)]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
@@ -58,7 +58,7 @@ class Repo:
     def analyze(self):
         print "Analyzing repo {}".format(self.id)
 
-        cmd = ['analizo','metrics','./repo{}'.format(self.id),'-o',self.id]
+        cmd = ['analizo','metrics','/repo{}'.format(self.id),'-o',self.id]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
