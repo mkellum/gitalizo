@@ -9,8 +9,6 @@ from urlparse import urlparse
 
 
 def main():
-    os.chdir('/home/kellum')
-
     # number in sequence (from condor), 0-indexed
     proc_num = int(sys.argv[1])
 
@@ -25,7 +23,7 @@ def main():
 
     print "Will analyze rows {} to {}".format(start_i, end_i)
 
-    reader = csv.reader(open('./repo_list.csv', 'r'))
+    reader = csv.reader(open('/home/kellum/repo_list.csv', 'r'))
     for i, row in enumerate(reader):
         if i >= end_i:
             break
@@ -53,7 +51,7 @@ class Repo:
     def download(self):
         print "Cloning repo {}".format(self.id)
 
-        cmd = ['git','clone',self.url,'./repo{}'.format(self.id)]
+        cmd = ['git','clone',self.url,'/home/kellum/repo{}'.format(self.id)]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
@@ -63,7 +61,7 @@ class Repo:
     def analyze(self):
         print "Analyzing repo {}".format(self.id)
 
-        cmd = ['analizo','metrics','./repo{}'.format(self.id),'-o','./{}'.format(self.id)]
+        cmd = ['analizo','metrics','/home/kellum/repo{}'.format(self.id),'-o','/home/kellum/{}'.format(self.id)]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
@@ -74,8 +72,8 @@ class Repo:
         print "Converting Analizo's YAML to CSV for repo {}".format(self.id)
 
         repoMetrics = []
-        for line in open('./{}'.format(self.id)).readlines()[1:]:
-            if ('---' not in line):
+        for line in open('/home/kellum/{}'.format(self.id)).readlines()[1:]:
+            if ('---' in line):
                 break
             splitLine = line.split(':')
             metric = splitLine[1].strip()
@@ -88,12 +86,14 @@ class Repo:
     # Writes repo-level metrics as a row to repoMetrics.csv
     # (appending or creating if it does not already exist)
     def WriteRepoCSVFile(self, metrics_list):
-        repoMetricsFile = './repo_metrics/{}.csv'.format(self.id)
+        repoMetricsFile = './{}.csv'.format(self.id)
 
         CSVrow = self.id + ','
         for metric in metrics_list:
             CSVrow += metric + ','
         CSVrow = CSVrow[:-1]  # strip the trailing comma
+
+        print "Writing CSV row:\n{}".format(CSVrow)
 
         CSVfile = open(repoMetricsFile, 'a+')
         CSVfile.write(CSVrow + '\n')

@@ -22,8 +22,8 @@ RUN mkdir -p /home/kellum
 RUN echo 'kellum::21493:0::/home/kellum:/bin/bash' >> /etc/passwd
 
 RUN mkdir /home/kellum/repo_metrics
-COPY gitalizo.py /home/kellum/
-COPY repo_list.csv /home/kellum/
+COPY gitalizo.py /
+COPY repo_list.csv /home/kellum
 
 RUN chmod -R 777 /home/kellum
 
