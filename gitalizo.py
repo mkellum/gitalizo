@@ -1,6 +1,7 @@
 # !/usr/bin/python
 
 import csv
+import os
 import subprocess
 import sys
 import time
@@ -8,6 +9,8 @@ from urlparse import urlparse
 
 
 def main():
+    os.chdir('/home/kellum')
+
     # number in sequence (from condor), 0-indexed
     proc_num = int(sys.argv[1])
 
@@ -22,7 +25,7 @@ def main():
 
     print "Will analyze rows {} to {}".format(start_i, end_i)
 
-    reader = csv.reader(open('/repo_list.csv', 'r'))
+    reader = csv.reader(open('./repo_list.csv', 'r'))
     for i, row in enumerate(reader):
         if i >= end_i:
             break
@@ -40,15 +43,17 @@ def main():
 
 class Repo:
     HTTPS_TEMPLATE = 'https://dummy24601:cafn9w0qrudls@github.com/{}.git'
+    # SSH_TEMPLATE = 'git@github.com:{}.git'
 
     def __init__(self, repo_row):
         self.id = repo_row[0]
         self.url = Repo.HTTPS_TEMPLATE.format(urlparse(repo_row[1]).path[7:])
+        # self.url = Repo.SSH_TEMPLATE.format(urlparse(repo_row[1]).path[7:])
 
     def download(self):
         print "Cloning repo {}".format(self.id)
 
-        cmd = ['git','clone',self.url,'repo{}'.format(self.id)]
+        cmd = ['git','clone',self.url,'./repo{}'.format(self.id)]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
@@ -58,7 +63,7 @@ class Repo:
     def analyze(self):
         print "Analyzing repo {}".format(self.id)
 
-        cmd = ['analizo','metrics','repo{}'.format(self.id),'-o',self.id]
+        cmd = ['analizo','metrics','./repo{}'.format(self.id),'-o','./{}'.format(self.id)]
         sp_output = subprocess.check_output(cmd)
         if sp_output:
             print sp_output
